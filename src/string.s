@@ -8,11 +8,12 @@ section .text
 Str_length:
 ; Input: pointer to string (on stack)
 ; Output: length of string (in eax)
-	; TODO: figure out a better way to get this off the stack
-	; (maybe use [esp+4] or something after pushing edi?)
-	pop eax
+	push ebp
+	mov ebp, esp
+
 	push edi
-	mov edi, eax
+
+	mov edi, [ebp + 12] ; stack parameter 1
 	mov eax, 0
 
 .L0:
@@ -23,5 +24,7 @@ Str_length:
 	jmp .L0
 
 .done:
+
 	pop edi
+	pop ebp
 	ret
