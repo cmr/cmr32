@@ -2,6 +2,7 @@
 ; Contains: Str_compare, Str_copy, Str_length, Str_trim, Str_ucase
 
 global Str_length
+global Str_copy
 
 section .text
 
@@ -13,7 +14,7 @@ Str_length:
 
 	push edi
 
-	mov edi, [ebp + 12] ; stack parameter 1
+	mov edi, [ebp + 8] ; stack parameter 1
 	mov eax, 0
 
 .L0:
@@ -27,4 +28,25 @@ Str_length:
 
 	pop edi
 	pop ebp
-	ret
+
+	ret 4
+
+Str_copy:
+; Input: two pointers to string (on stack)
+; Output: none
+	push ebp
+	mov ebp, esp
+
+	mov esi, [ebp + 8]
+	mov edi, [ebp + 12]
+.L0:
+	mov al, byte [esi]
+	mov byte [edi], al
+	inc esi
+	inc edi
+
+	cmp al, 0
+	jne .L0
+
+	pop ebp
+	ret 8
